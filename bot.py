@@ -16,15 +16,14 @@ def is_logged_out(driver):
     return "login" in driver.current_url or "session expired" in driver.page_source.lower()
 
 def setup_driver():
+    chrome_path = "/usr/bin/google-chrome"
     options = uc.ChromeOptions()
-    options.add_argument('--headless')
+    options.add_argument("--headless=new")
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--incognito')
-    options.add_experimental_option("prefs", {
-        "credentials_enable_service": False,
-        "profile.password_manager_enabled": False
-    })
+    options.add_argument('--disable-gpu')
+    options.binary_location = chrome_path
+
     return uc.Chrome(options=options)
 
 def wait_for_valid_page(driver, url):
