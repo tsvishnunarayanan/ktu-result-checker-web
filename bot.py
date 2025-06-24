@@ -24,7 +24,9 @@ def setup_driver():
     options.add_argument('--disable-gpu')
     options.binary_location = chrome_path
 
-    return uc.Chrome(options=options)
+    chrome_path = "/usr/bin/google-chrome"
+    return uc.Chrome(options=options, browser_executable_path=chrome_path)
+
 
 def wait_for_valid_page(driver, url):
     attempt = 1
