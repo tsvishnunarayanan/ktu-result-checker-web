@@ -1,4 +1,4 @@
 flask
 selenium
-undetected-chromedriver
+undetected-chromedriver==3.4.6
 requests
