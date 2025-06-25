@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 set -o errexit
+set -o nounset
 
-echo "👉 Installing Chromium..."
-apt-get update && apt-get install -y chromium-browser
+echo "📦 Downloading precompiled Chromium..."
 
-echo "👉 Locating Chrome binary..."
-which chromium-browser > .chrome-bin
+mkdir -p /tmp/chrome
+cd /tmp/chrome
 
-echo "✅ Chrome path saved to .chrome-bin"
+curl -sSL https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1193136/chrome-linux.zip -o chrome.zip
+unzip -q chrome.zip
+chmod +x chrome-linux/chrome
+
+echo "/tmp/chrome/chrome-linux/chrome" > $RENDER_PROJECT_ROOT/.chrome-bin
