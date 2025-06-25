@@ -16,15 +16,17 @@ def is_logged_out(driver):
     return "login" in driver.current_url or "session expired" in driver.page_source.lower()
 
 def setup_driver():
-    chrome_path = "/usr/bin/google-chrome"
     options = uc.ChromeOptions()
-    options.add_argument("--headless=new")
+    options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
-    options.binary_location = chrome_path
+    options.add_argument('--disable-software-rasterizer')
 
-    chrome_path = "/usr/bin/google-chrome"
+    # Load Chromium path from the file we wrote in build.sh
+    with open(".chromium-path", "r") as f:
+        chrome_path = f.read().strip()
+
     return uc.Chrome(options=options, browser_executable_path=chrome_path)
 
 
