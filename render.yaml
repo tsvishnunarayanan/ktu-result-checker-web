@@ -1,0 +1,7 @@
+services:
+  - type: worker
+    name: ktu-background-checker
+    env: python
+    buildCommand: bash build.sh
+    startCommand: python worker.py
+    plan: free
