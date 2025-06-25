@@ -1,19 +1,24 @@
-from flask import Flask
-from threading import Thread
-from bot import run_checker
+from flask import Flask, render_template, request, send_file
+from bot import run_checker_web
 
-app = Flask(__name__)
+app = Flask(__name__)  
 
-def background_task():
-    run_checker()
-
-@app.before_first_request
-def start_bot():
-    Thread(target=background_task).start()
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return "<h2>🎓 KTU Result Bot is Running in Background</h2><p>You'll get a Telegram alert when your result is out.</p>"
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        semester = request.form['semester']
+        status, pdf_path, img_path = run_checker_web(username, password, semester)
+        return f"<h2>{status}</h2>"
+    return '''
+        <form method="post">
+            <label>KTU ID:</label><input name="username"><br>
+            <label>Password:</label><input name="password" type="password"><br>
+            <label>Semester (S1-S8):</label><input name="semester"><br>
+            <input type="submit" value="Check Result">
+        </form>
+    '''
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
