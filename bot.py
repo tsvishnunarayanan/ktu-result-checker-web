@@ -24,8 +24,8 @@ def setup_driver():
     with open(".chrome-bin") as f:
         chrome_path = f.read().strip()
 
-    options.binary_location = chrome_path  # fallback for compatibility
-    return uc.Chrome(browser_executable_path=chrome_path, options=options)
+    return uc.Chrome(driver_executable_path=chrome_path, options=options)
+
 
 
 def wait_for_valid_page(driver, url):
