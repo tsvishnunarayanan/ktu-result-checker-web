@@ -11,4 +11,4 @@ curl -sSL https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/11
 unzip -q chrome.zip
 chmod +x chrome-linux/chrome
 
-echo "/tmp/chrome/chrome-linux/chrome" > $RENDER_PROJECT_ROOT/.chrome-bin
+echo "/tmp/chrome/chrome-linux/chrome" > "$RENDER_PROJECT_ROOT/.chrome-bin"
