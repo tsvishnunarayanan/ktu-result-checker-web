@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
-set -x  # Show commands as they run
+# Install Chromium manually
+mkdir -p ~/.local/bin
+apt-get update && apt-get install -y chromium-browser
 
-# Install Chrome (headless)
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-apt update && apt install -y ./google-chrome-stable_current_amd64.deb
+# Mark the binary location for later
+which chromium-browser > .chromium-path
 
-# Install Python packages
+# Install Python deps
 pip install -r requirements.txt
