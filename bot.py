@@ -17,8 +17,7 @@ def is_logged_out(driver):
 
 
 def setup_driver():
-    chrome_path_file = os.path.join(os.path.dirname(__file__), ".chrome-bin")
-    
+    chrome_path_file = ".chrome-bin"  # in project root
     with open(chrome_path_file, "r") as f:
         chrome_path = f.read().strip()
 
