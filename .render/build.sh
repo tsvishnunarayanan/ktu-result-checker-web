@@ -1,20 +1,29 @@
 #!/bin/bash
 
-# Install dependencies
+# Install Python dependencies
 pip install -r requirements.txt
 
-# Set up Chromium + Chromedriver (1148743 is known to match Chrome 115)
+# Fetch latest matching Chrome + ChromeDriver (Chrome for Testing)
 mkdir -p /opt/render/project/src/chrome
 cd /opt/render/project/src/chrome
 
-# Download Chromium
-wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1148743/chrome-linux.zip
-unzip chrome-linux.zip
-chmod +x chrome-linux/chrome
-echo "/opt/render/project/src/chrome/chrome-linux/chrome" > /opt/render/project/src/.chrome-bin
+# Fetch version info
+CFT_JSON=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json)
+CHROME_URL=$(echo "$CFT_JSON" | grep -oP 'https://.*?chrome-linux64.zip' | head -1)
+DRIVER_URL=$(echo "$CFT_JSON" | grep -oP 'https://.*?chromedriver-linux64.zip' | head -1)
 
-# Download Chromedriver
-wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1148743/chromedriver-linux64.zip
+# Download both
+wget -O chrome-linux64.zip "$CHROME_URL"
+wget -O chromedriver-linux64.zip "$DRIVER_URL"
+
+# Extract
+unzip chrome-linux64.zip
 unzip chromedriver-linux64.zip
+
+# Make executables
+chmod +x chrome-linux64/chrome
 chmod +x chromedriver-linux64/chromedriver
+
+# Save paths for Python to use
+echo "/opt/render/project/src/chrome/chrome-linux64/chrome" > /opt/render/project/src/.chrome-bin
 echo "/opt/render/project/src/chrome/chromedriver-linux64/chromedriver" > /opt/render/project/src/.chromedriver-bin
