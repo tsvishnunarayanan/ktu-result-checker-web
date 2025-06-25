@@ -8,7 +8,7 @@ mkdir -p /opt/render/project/src/chrome
 cd /opt/render/project/src/chrome
 
 # Get a recent portable Chromium build (not Google Chrome)
-wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1142525/chrome-linux.zip
+wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1238505/chrome-linux.zip
 unzip chrome-linux.zip
 chmod +x chrome-linux/chrome
 
