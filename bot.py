@@ -22,7 +22,13 @@ def setup_driver():
 
     options = uc.ChromeOptions()
     options.binary_location = chrome_path
-    return uc.Chrome(options=options, browser_executable_path=chrome_path)
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--headless=new")  # Use newer headless mode
+
+    return uc.Chrome(options=options)
+
 
 
 def wait_for_valid_page(driver, url):
