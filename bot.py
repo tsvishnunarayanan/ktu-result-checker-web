@@ -45,37 +45,53 @@ def send_telegram_file(file_path, caption=""):
 
 
 def setup_driver():
-    import shutil
+    import shutil, stat
+    import os, zipfile, requests
+    from pathlib import Path
 
+    chrome_dir = "/tmp/chrome"
+    chrome_path = "/tmp/chrome/chrome"
+    zip_path = "/tmp/chrome.zip"
+    extract_dir = "/tmp/chrome-linux"
+
+    # If browser already downloaded, skip
+    if not Path(chrome_path).exists():
+        # Cleanup old attempts
+        if Path(chrome_dir).exists():
+            shutil.rmtree(chrome_dir, ignore_errors=True)
+        if Path(extract_dir).exists():
+            shutil.rmtree(extract_dir, ignore_errors=True)
+        if Path(zip_path).exists():
+            os.remove(zip_path)
+
+        # ✅ Download Chromium
+        url = "https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1181205/chrome-linux.zip"
+        r = requests.get(url)
+        with open(zip_path, "wb") as f:
+            f.write(r.content)
+
+        # ✅ Extract zip
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall("/tmp")
+
+        # ✅ Move chrome to /tmp/chrome
+        shutil.move(extract_dir, chrome_dir)
+
+        # ✅ Make executable
+        os.chmod(chrome_path, os.stat(chrome_path).st_mode | stat.S_IEXEC)
+
+    # ✅ Setup undetected-chromedriver
     options = uc.ChromeOptions()
-    options.add_argument('--headless')
+    options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-
-    chrome_path = "/tmp/chrome/chrome"
-
-    if not os.path.exists(chrome_path):
-        print("🔧 Downloading Chromium...")
-        os.makedirs("/tmp/chrome", exist_ok=True)
-
-        # Download the zip
-        os.system("curl -sSL https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1181205/chrome-linux.zip -o /tmp/chrome.zip")
-
-        # Unzip
-        os.system("unzip -q /tmp/chrome.zip -d /tmp")
-
-        # Remove old chrome if it exists
-        if os.path.exists("/tmp/chrome"):
-            shutil.rmtree("/tmp/chrome")
-
-        # Move extracted folder
-        shutil.move("/tmp/chrome-linux", "/tmp/chrome")
 
     return uc.Chrome(
         options=options,
         browser_executable_path=chrome_path
     )
+
+  
 
 
 
