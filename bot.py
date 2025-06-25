@@ -45,21 +45,22 @@ def send_telegram_file(file_path, caption=""):
 
 
 def setup_driver():
+    import shutil
+
     options = uc.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
 
-    # Use temporary directory for installing Chromium
     chrome_path = "/tmp/chrome/chrome"
 
-    # If not already downloaded, download it
     if not os.path.exists(chrome_path):
+        print("🔧 Downloading Chromium...")
         os.makedirs("/tmp/chrome", exist_ok=True)
-        os.system("curl -sSL https://github.com/macchrome/winchrome/releases/download/v121.0.6167.85-r1181205/Linux_x64_chrome-linux.zip -o /tmp/chrome.zip")
+        os.system("curl -sSL https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1181205/chrome-linux.zip -o /tmp/chrome.zip")
         os.system("unzip -q /tmp/chrome.zip -d /tmp")
-        os.system("mv /tmp/chrome-linux/* /tmp/chrome")
+        shutil.move("/tmp/chrome-linux", "/tmp/chrome")
 
     return uc.Chrome(
         options=options,
