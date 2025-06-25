@@ -1,13 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-echo "👉 Installing Chromium"
+# Install dependencies and Chrome
+apt-get update && apt-get install -y wget curl unzip gnupg
+mkdir -p .local/chrome
+cd .local/chrome
 
-mkdir -p .chrome
-curl -SL https://storage.googleapis.com/chrome-for-testing-public/122.0.6261.57/linux64/chrome-linux64.zip -o chrome-linux.zip
-unzip chrome-linux.zip -d .chrome
-chmod +x .chrome/chrome-linux64/chrome
+# Download and install Chrome
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+apt-get install -y ./google-chrome-stable_current_amd64.deb || true
 
-# Save the binary path
-echo "$(pwd)/.chrome/chrome-linux64/chrome" > .chrome-bin
+# Get chrome binary path
+CHROME_PATH=$(which google-chrome || which google-chrome-stable)
 
-echo "✅ Chromium installed"
+# Write the path to a known file that Python reads
+cd ../../
+echo "$CHROME_PATH" > .chrome-bin
