@@ -21,10 +21,16 @@ def setup_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--headless=new")
 
-    with open(".chrome-bin") as f:
+    with open("/opt/render/project/src/.chrome-bin") as f:
         chrome_path = f.read().strip()
+    with open("/opt/render/project/src/.chromedriver-bin") as f:
+        chromedriver_path = f.read().strip()
 
-    return uc.Chrome(driver_executable_path=chrome_path, options=options)
+    return uc.Chrome(
+        browser_executable_path=chrome_path,
+        driver_executable_path=chromedriver_path,
+        options=options
+    )
 
 
 
