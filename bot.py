@@ -16,7 +16,7 @@ def is_logged_out(driver):
     return "login" in driver.current_url or "session expired" in driver.page_source.lower()
 
 def setup_driver():
-    chrome_path_file = os.path.join(os.path.dirname(__file__), ".chrome-bin")
+    chrome_path_file = "/opt/render/project/src/.chrome-bin"
     with open(chrome_path_file, "r") as f:
         chrome_path = f.read().strip()
 
