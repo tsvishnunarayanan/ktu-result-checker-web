@@ -16,19 +16,16 @@ def is_logged_out(driver):
     return "login" in driver.current_url or "session expired" in driver.page_source.lower()
 
 def setup_driver():
-    chrome_path_file = "/opt/render/project/src/.chrome-bin"
-    with open(chrome_path_file, "r") as f:
-        chrome_path = f.read().strip()
-
     options = uc.ChromeOptions()
-    options.binary_location = chrome_path
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--headless=new")  # Use newer headless mode
+    options.add_argument("--headless=new")
 
-    return uc.Chrome(options=options)
+    # Set Chromium path manually
+    with open(".chrome-bin") as f:
+        chrome_path = f.read().strip()
 
+    return uc.Chrome(browser_executable_path=chrome_path, options=options)
 
 
 def wait_for_valid_page(driver, url):
