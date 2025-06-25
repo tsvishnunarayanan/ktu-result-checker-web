@@ -15,7 +15,6 @@ import uuid
 def is_logged_out(driver):
     return "login" in driver.current_url or "session expired" in driver.page_source.lower()
 
-
 def setup_driver():
     chrome_path_file = os.path.join(os.path.dirname(__file__), ".chrome-bin")
     with open(chrome_path_file, "r") as f:
@@ -24,6 +23,7 @@ def setup_driver():
     options = uc.ChromeOptions()
     options.binary_location = chrome_path
     return uc.Chrome(options=options, browser_executable_path=chrome_path)
+
 
 def wait_for_valid_page(driver, url):
     attempt = 1
