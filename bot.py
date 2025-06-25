@@ -9,6 +9,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+os.makedirs("static", exist_ok=True)
+
 # Suppress warnings
 warnings.filterwarnings("ignore", category=UserWarning)
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
