@@ -26,7 +26,11 @@ def setup_driver():
     with open(".chromedriver-bin") as f:
         driver_path = f.read().strip()
 
-    return uc.Chrome(browser_executable_path=chrome_path, driver_executable_path=driver_path, options=options)
+    return uc.Chrome(
+        browser_executable_path=chrome_path,
+        driver_executable_path=driver_path,
+        options=options
+    )
 
 def wait_for_valid_page(driver, url):
     attempt = 1
