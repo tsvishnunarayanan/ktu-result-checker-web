@@ -21,10 +21,10 @@ def setup_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--headless=new")
 
-    # Set Chromium path manually
     with open(".chrome-bin") as f:
         chrome_path = f.read().strip()
 
+    options.binary_location = chrome_path  # fallback for compatibility
     return uc.Chrome(browser_executable_path=chrome_path, options=options)
 
 
