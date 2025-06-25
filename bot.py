@@ -139,6 +139,7 @@ def export_result(driver, SEMESTER):
         if response.ok:
             filename = f"KTU_{SEMESTER}_{uuid.uuid4().hex}.pdf"
             path = os.path.join("static", filename)
+            os.makedirs("static", exist_ok=True)
             with open(path, "wb") as f:
                 f.write(response.content)
             return f"Result available for {SEMESTER}.", path, None
