@@ -50,7 +50,22 @@ def setup_driver():
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
-    return uc.Chrome(options=options)
+
+    # Use temporary directory for installing Chromium
+    chrome_path = "/tmp/chrome/chrome"
+
+    # If not already downloaded, download it
+    if not os.path.exists(chrome_path):
+        os.makedirs("/tmp/chrome", exist_ok=True)
+        os.system("curl -sSL https://github.com/macchrome/winchrome/releases/download/v121.0.6167.85-r1181205/Linux_x64_chrome-linux.zip -o /tmp/chrome.zip")
+        os.system("unzip -q /tmp/chrome.zip -d /tmp")
+        os.system("mv /tmp/chrome-linux/* /tmp/chrome")
+
+    return uc.Chrome(
+        options=options,
+        browser_executable_path=chrome_path
+    )
+
 
 
 def wait_for_valid_page(driver, url):
