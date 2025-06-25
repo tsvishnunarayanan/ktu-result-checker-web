@@ -1,20 +1,16 @@
-#!/usr/bin/env bash
-set -o errexit
-set -o nounset
+#!/bin/bash
 
-echo "📦 Downloading precompiled Chromium..."
+# Install dependencies
+pip install -r requirements.txt
 
-# Set download directory inside Render project root
-CHROME_DIR="$RENDER_PROJECT_ROOT/.chrome"
-mkdir -p "$CHROME_DIR"
-cd "$CHROME_DIR"
+# Download Chromium manually to a writable location
+mkdir -p /opt/render/project/src/chrome
+cd /opt/render/project/src/chrome
 
-# Use known working build of Chromium (this URL is stable)
-curl -sSL https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1193136/chrome-linux.zip -o chrome.zip
-unzip -q chrome.zip
-
-# Save the path to the Chrome binary
+# Get a recent portable Chromium build (not Google Chrome)
+wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1142525/chrome-linux.zip
+unzip chrome-linux.zip
 chmod +x chrome-linux/chrome
-echo "$CHROME_DIR/chrome-linux/chrome" > "$RENDER_PROJECT_ROOT/.chrome-bin"
 
-echo "✅ Chrome downloaded to $CHROME_DIR"
+# Save path to a file so Python can read it
+echo "/opt/render/project/src/chrome/chrome-linux/chrome" > /opt/render/project/src/.chrome-bin
