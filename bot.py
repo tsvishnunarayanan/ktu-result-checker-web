@@ -175,24 +175,20 @@ def export_result(driver):
         return f"Export error: {e}", None
 
 
-def run_checker():
+def run_checker_web(USERNAME, PASSWORD, SEMESTER):
     driver = setup_driver()
     selected = False
     try:
         if not login(driver):
-            send_telegram_message("❌ Login failed. Check credentials.")
-            return
+            return "Login failed. Check credentials.", None
         if not go_to_result_page(driver):
-            send_telegram_message("❌ Failed to reach result page.")
-            return
+            return "Failed to reach result page.", None
 
         while True:
             status = is_result_present(driver)
             if status == True:
                 msg, file = export_result(driver)
-                send_telegram_message(msg)
-                send_telegram_file(file, msg)
-                break
+                return msg, file
             elif status == "expired":
                 login(driver)
                 go_to_result_page(driver)
@@ -204,12 +200,7 @@ def run_checker():
                 continue
             elif status == "incomplete":
                 msg, file = fetch_exam_result_from_profile(driver)
-                if file:
-                    send_telegram_message(msg)
-                    send_telegram_file(file, msg)
-                else:
-                    send_telegram_message(msg)
-                break
+                return msg, file
 
             if not selected:
                 if select_semester(driver):
@@ -221,7 +212,3 @@ def run_checker():
             driver.quit()
         except:
             pass
-
-
-if __name__ == "__main__":
-    run_checker()
