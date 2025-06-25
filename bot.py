@@ -15,19 +15,21 @@ import uuid
 def is_logged_out(driver):
     return "login" in driver.current_url or "session expired" in driver.page_source.lower()
 
+
 def setup_driver():
     options = uc.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
-    options.add_argument('--disable-software-rasterizer')
 
-    # Load Chromium path from the file we wrote in build.sh
-    with open(".chromium-path", "r") as f:
+    # Correct path
+    chrome_path_file = os.path.join(os.getcwd(), ".chromium-path")
+    with open(chrome_path_file, "r") as f:
         chrome_path = f.read().strip()
 
     return uc.Chrome(options=options, browser_executable_path=chrome_path)
+
 
 
 def wait_for_valid_page(driver, url):
