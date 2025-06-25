@@ -21,18 +21,19 @@ def setup_driver():
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--headless=new")
 
-    with open("/opt/render/project/src/.chrome-bin") as f:
+    # Read chrome binary path
+    with open(".chrome-bin") as f:
         chrome_path = f.read().strip()
-    with open("/opt/render/project/src/.chromedriver-bin") as f:
+
+    # Read chromedriver binary path
+    with open(".chromedriver-bin") as f:
         chromedriver_path = f.read().strip()
 
-    return uc.Chrome(
-        browser_executable_path=chrome_path,
-        driver_executable_path=chromedriver_path,
-        options=options
-    )
+    # Provide paths using environment variable and class attribute
+    os.environ["UC_BROWSER_PATH"] = chrome_path
+    uc.Chrome.CHROMEDRIVER_PATH = chromedriver_path
 
-
+    return uc.Chrome(options=options)
 
 def wait_for_valid_page(driver, url):
     attempt = 1
