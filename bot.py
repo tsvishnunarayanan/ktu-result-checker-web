@@ -2,12 +2,16 @@ import os
 import time
 import uuid
 import requests
+import stat
+import zipfile
 import warnings
 import urllib3
+import shutil
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from pathlib import Path
 
 os.makedirs("static", exist_ok=True)
 
@@ -45,10 +49,6 @@ def send_telegram_file(file_path, caption=""):
 
 
 def setup_driver():
-    import shutil, stat
-    import os, zipfile, requests
-    from pathlib import Path
-
     chrome_dir = "/tmp/chrome"
     chrome_path = "/tmp/chrome/chrome"
     zip_path = "/tmp/chrome.zip"
