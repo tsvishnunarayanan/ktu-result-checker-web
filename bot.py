@@ -17,20 +17,16 @@ def is_logged_out(driver):
 
 def setup_driver():
     options = uc.ChromeOptions()
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--headless=new")
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
 
-    with open(".chrome-bin") as f:
-        chrome_path = f.read().strip()
-    with open(".chromedriver-bin") as f:
-        driver_path = f.read().strip()
+    chrome_path = os.getenv("GOOGLE_CHROME_BIN", "chrome-linux64/chrome")
+    driver_path = "chromedriver-linux64/chromedriver"
 
-    return uc.Chrome(
-        browser_executable_path=chrome_path,
-        driver_executable_path=driver_path,
-        options=options
-    )
+    return uc.Chrome(browser_executable_path=chrome_path, driver_executable_path=driver_path, options=options)
+
 
 def wait_for_valid_page(driver, url):
     attempt = 1
