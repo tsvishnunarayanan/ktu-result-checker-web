@@ -7,8 +7,8 @@ pip install -r requirements.txt
 mkdir -p /opt/render/project/src/chrome
 cd /opt/render/project/src/chrome
 
-# Get a recent portable Chromium build (not Google Chrome)
-wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1148743/chrome-linux.zip
+# ✅ Use a working version of Chromium
+wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1142525/chrome-linux.zip
 unzip chrome-linux.zip
 chmod +x chrome-linux/chrome
 
