@@ -58,8 +58,18 @@ def setup_driver():
     if not os.path.exists(chrome_path):
         print("🔧 Downloading Chromium...")
         os.makedirs("/tmp/chrome", exist_ok=True)
+
+        # Download the zip
         os.system("curl -sSL https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/1181205/chrome-linux.zip -o /tmp/chrome.zip")
+
+        # Unzip
         os.system("unzip -q /tmp/chrome.zip -d /tmp")
+
+        # Remove old chrome if it exists
+        if os.path.exists("/tmp/chrome"):
+            shutil.rmtree("/tmp/chrome")
+
+        # Move extracted folder
         shutil.move("/tmp/chrome-linux", "/tmp/chrome")
 
     return uc.Chrome(
