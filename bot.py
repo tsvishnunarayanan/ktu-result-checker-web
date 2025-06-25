@@ -18,12 +18,14 @@ def is_logged_out(driver):
 
 def setup_driver():
     chrome_path_file = os.path.join(os.path.dirname(__file__), ".chrome-bin")
-    with open(".chrome-bin", "r") as f:
-    chrome_path = f.read().strip()
+    
+    with open(chrome_path_file, "r") as f:
+        chrome_path = f.read().strip()
 
-options.binary_location = chrome_path
-driver = uc.Chrome(options=options, browser_executable_path=chrome_path)
+    options = uc.ChromeOptions()
+    options.binary_location = chrome_path
 
+    return uc.Chrome(options=options, browser_executable_path=chrome_path)
 
 
 
