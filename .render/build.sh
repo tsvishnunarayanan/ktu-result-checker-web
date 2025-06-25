@@ -3,27 +3,28 @@
 # Install Python dependencies
 pip install -r requirements.txt
 
-# Fetch latest matching Chrome + ChromeDriver (Chrome for Testing)
+# Make directory
 mkdir -p /opt/render/project/src/chrome
 cd /opt/render/project/src/chrome
 
-# Fetch version info
+# Fetch the latest known good version for Linux
 CFT_JSON=$(curl -s https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json)
-CHROME_URL=$(echo "$CFT_JSON" | grep -oP 'https://.*?chrome-linux64.zip' | head -1)
-DRIVER_URL=$(echo "$CFT_JSON" | grep -oP 'https://.*?chromedriver-linux64.zip' | head -1)
 
-# Download both
+# Extract download URLs for Linux
+CHROME_URL=$(echo "$CFT_JSON" | jq -r '.channels.Stable.downloads.chrome[] | select(.platform=="linux64") | .url')
+DRIVER_URL=$(echo "$CFT_JSON" | jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform=="linux64") | .url')
+
+# Download and unzip
 wget -O chrome-linux64.zip "$CHROME_URL"
 wget -O chromedriver-linux64.zip "$DRIVER_URL"
 
-# Extract
 unzip chrome-linux64.zip
 unzip chromedriver-linux64.zip
 
-# Make executables
+# Make them executable
 chmod +x chrome-linux64/chrome
 chmod +x chromedriver-linux64/chromedriver
 
-# Save paths for Python to use
+# Save paths for Python
 echo "/opt/render/project/src/chrome/chrome-linux64/chrome" > /opt/render/project/src/.chrome-bin
 echo "/opt/render/project/src/chrome/chromedriver-linux64/chromedriver" > /opt/render/project/src/.chromedriver-bin
